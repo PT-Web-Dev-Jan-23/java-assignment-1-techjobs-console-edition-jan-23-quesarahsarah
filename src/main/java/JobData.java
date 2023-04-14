@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Created by LaunchCode
@@ -31,9 +33,7 @@ public class JobData {
 
         // load data, if not already loaded
         loadData();
-
         ArrayList<String> values = new ArrayList<>();
-
         for (HashMap<String, String> row : allJobs) {
             String aValue = row.get(field);
 
@@ -41,22 +41,16 @@ public class JobData {
                 values.add(aValue);
             }
         }
-
         // Bonus mission: sort the results
         Collections.sort(values);
-
         return values;
     }
 
     public static ArrayList<HashMap<String, String>> findAll() {
-
-        // load data, if not already loaded
-        loadData();
-
+        loadData();  // load data, if not already loaded
         // Bonus mission; normal version returns allJobs
         return new ArrayList<>(allJobs);
     }
-
     /**
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
@@ -69,39 +63,38 @@ public class JobData {
      * @return List of all jobs matching the criteria
      */
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
-
-        // load data, if not already loaded
-        loadData();
-
+        loadData(); // load data, if not already loaded
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
-
-        for (HashMap<String, String> row : allJobs) {
-
-            String aValue = row.get(column);
-
+        //for listing in Arraylist, get value (skill, location, etc)
+        for (HashMap<String, String> listing : allJobs) {
+            String aValue = listing.get(column);
             if (aValue.contains(value)) {
-                jobs.add(row);
+                jobs.add(listing);
             }
         }
-
         return jobs;
     }
-
-    /**
-     * Search all columns for the given term
-     *
+    /*Search all columns for the given term
      * @param value The search term to look for
      * @return      List of all jobs with at least one field containing the value
      */
     public static ArrayList<HashMap<String, String>> findByValue(String value) {
-
-        // load data, if not already loaded
-        loadData();
-
+        loadData(); // load data, if not already loaded
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        // for listing in arraylist, if listing contains value, add listing to jobs
+        for (HashMap<String, String> listing : allJobs){
+            Set<String> akeys = new HashSet<String>();
+            akeys = listing.keySet();
+            for (String key : akeys){
+                String aValue = listing.get(key);
+                if (aValue.contains(value)&& !jobs.contains(listing)){
+                    jobs.add(listing);
+                }
+            }
+        }
         // TODO - implement this method
-        return null;
+        return jobs;
     }
-
     /**
      * Read in data from a CSV file and store it in a list
      */
