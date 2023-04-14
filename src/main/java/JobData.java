@@ -68,7 +68,7 @@ public class JobData {
         //for listing in Arraylist, get value (skill, location, etc)
         for (HashMap<String, String> listing : allJobs) {
             String aValue = listing.get(column);
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(listing);
             }
         }
@@ -87,7 +87,7 @@ public class JobData {
             akeys = listing.keySet();
             for (String key : akeys){
                 String aValue = listing.get(key);
-                if (aValue.contains(value)&& !jobs.contains(listing)){
+                if (aValue.toLowerCase().contains(value.toLowerCase())&& !jobs.contains(listing)){
                     jobs.add(listing);
                 }
             }
